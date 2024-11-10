@@ -4,9 +4,10 @@ import MultiSelectDropdown from "./multiSelectWithDropdown";
 
 export interface FormElementProps extends FormElement {
   value?: any;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: any;
   onSelectChange?: any;
   className?: string;
+  error?: boolean;
 }
 export const TextInput: React.FC<FormElementProps> = ({
   label,
@@ -15,10 +16,14 @@ export const TextInput: React.FC<FormElementProps> = ({
   onChange,
   required,
   className,
+  error,
 }) => {
   return (
     <div className={className}>
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={name} aria-required={required}>
+        {required && <span style={{ color: "red" }}>*</span>}
+        {label}
+      </label>
       <input
         type="text"
         id={name}
@@ -27,6 +32,9 @@ export const TextInput: React.FC<FormElementProps> = ({
         onChange={onChange}
         required={required}
       />
+      {error && (
+        <p style={{ fontSize: "8px", color: "red", margin: 0 }}>{error} </p>
+      )}
     </div>
   );
 };
@@ -126,20 +134,22 @@ export const RadioInput: React.FC<FormElementProps> = ({
   onChange,
   options,
   required,
+  className,
 }) => {
   return (
-    <div>
+    <div className={className}>
       <label>{label}</label>
       {options.map((option: any, index: number) => (
-        <div key={index}>
+        <div key={index} style={{ display: "flex", gap: 5 }}>
           <input
             type="radio"
             id={`${name}-${option}`}
             name={name}
             value={option}
-            checked={value === option}
-            onChange={onChange}
+            checked={value == option}
+            onChange={() => onChange(option)}
             required={required}
+            style={{ cursor: "pointer" }}
           />
           <label htmlFor={`${name}-${option}`}>{option}</label>
         </div>

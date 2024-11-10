@@ -20,21 +20,22 @@
 
 .addButton {
   margin-left: auto;
-  width: 40%;
+  width: 30%;
   font-size: 14px;
   border-radius: 8px;
   margin-top: 10px;
   border: none;
   cursor: pointer;
-  padding: 12px;
+  padding: 10px;
   font-family: "Poppins";
-  background-color: rgb(251, 237, 135);
+  /* background-color: rgb(251, 237, 135); */
+  background-color: rgb(255, 229, 156);
+  /* background-color: rgb(244, 249, 153); */
 }
 .inputField {
   display: flex;
   flex-direction: column;
   width: 100%;
-  justify-content: space-between;
 }
 
 .inputField label {

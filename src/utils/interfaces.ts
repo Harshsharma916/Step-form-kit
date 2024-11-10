@@ -1,9 +1,7 @@
-import React from "react";
-
 export interface FormElement {
   name?: string;
   label?: string;
-  validation?: (value: any) => boolean | string | Promise<boolean | string>;
+  validation?: ValidationTypes;
   editable?: boolean;
   inputType?:
     | "text"
@@ -21,6 +19,7 @@ export interface FormElement {
   conditionFor?: string[];
 }
 
+export type ValidationTypes = "email" | "phoneNumber";
 export type FormElementKeys =
   | "name"
   | "label"
