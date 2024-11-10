@@ -9,6 +9,7 @@ import { FormElementsContext } from "@/utils/context";
 import {
   FormElement,
   FormElementKeys,
+  InputTypes,
   keyTolabel,
   ValidationTypes,
 } from "@/utils/interfaces";
@@ -20,6 +21,7 @@ const CreateForm = () => {
     useContext(FormElementsContext);
   const [singleFormElement, setSingleFormElement] = useState<FormElement>({});
   const [error, setError] = useState<any>();
+  const [optionText, setOptionText] = useState<string>("");
   const formElementsNames = formElements?.map((item) => item.name);
   const formKeys: FormElementKeys[] = [
     "name",
@@ -34,6 +36,16 @@ const CreateForm = () => {
   ];
   const requiredFormKeys: FormElementKeys[] = ["name", "label", "inputType"];
   const validationTypes: ValidationTypes[] = ["email", "phoneNumber"];
+  const inputTypes: InputTypes[] = [
+    "text",
+    "number",
+    "checkbox",
+    "radio",
+    "email",
+    "password",
+    "select",
+    "multi-select",
+  ];
 
   const handleSelectOption = (optionValue: string) => {
     const selectedOptions = singleFormElement.conditionFor || [];
@@ -123,6 +135,59 @@ const CreateForm = () => {
                   }
                   className={styles.inputField}
                 />
+              );
+            case "inputType":
+              return (
+                <div key={idx}>
+                  <RadioInput
+                    name={formKey}
+                    options={inputTypes}
+                    label={`${keyTolabel(formKey)}:`}
+                    value={singleFormElement[formKey]}
+                    onChange={(option: InputTypes) =>
+                      setSingleFormElement({
+                        ...singleFormElement,
+                        [formKey]: option,
+                      })
+                    }
+                    className={styles.inputField}
+                  />
+                  {(singleFormElement.inputType == "checkbox" ||
+                    singleFormElement.inputType == "radio" ||
+                    singleFormElement.inputType == "select" ||
+                    singleFormElement.inputType == "multi-select") && (
+                    <div>
+                      <div>
+                        {singleFormElement?.options?.map(
+                          (option: any, idx: number) => (
+                            <div key={idx}>{option}</div>
+                          )
+                        )}
+                      </div>
+                      <div>
+                        <TextInput
+                          name={"options"}
+                          label={"Options"}
+                          value={optionText}
+                          onChange={(e: any) => setOptionText(e.target.value)}
+                          className={styles.inputField}
+                          error={error?.[formKey]}
+                        />
+                        <button
+                          onClick={() => {
+                            singleFormElement?.options?.length > 0
+                              ? singleFormElement.options.push(optionText)
+                              : (singleFormElement.options = [optionText]);
+                            setSingleFormElement(singleFormElement);
+                            setOptionText("");
+                          }}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               );
             default:
               return (

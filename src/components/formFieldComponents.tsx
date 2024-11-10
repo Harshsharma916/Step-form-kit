@@ -139,21 +139,34 @@ export const RadioInput: React.FC<FormElementProps> = ({
   return (
     <div className={className}>
       <label>{label}</label>
-      {options.map((option: any, index: number) => (
-        <div key={index} style={{ display: "flex", gap: 5 }}>
-          <input
-            type="radio"
-            id={`${name}-${option}`}
-            name={name}
-            value={option}
-            checked={value == option}
-            onChange={() => onChange(option)}
-            required={required}
-            style={{ cursor: "pointer" }}
-          />
-          <label htmlFor={`${name}-${option}`}>{option}</label>
-        </div>
-      ))}
+      <div
+        style={
+          name == "inputType"
+            ? {
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: 8,
+              }
+            : {}
+        }
+      >
+        {options.map((option: any, index: number) => (
+          <div key={index} style={{ display: "flex", gap: 5 }}>
+            <input
+              type="radio"
+              id={`${name}-${option}`}
+              name={name}
+              value={option}
+              checked={value == option}
+              onChange={() => onChange(option)}
+              required={required}
+              style={{ cursor: "pointer" }}
+            />
+            <label htmlFor={`${name}-${option}`}>{option}</label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -3,15 +3,7 @@ export interface FormElement {
   label?: string;
   validation?: ValidationTypes;
   editable?: boolean;
-  inputType?:
-    | "text"
-    | "number"
-    | "email"
-    | "password"
-    | "checkbox"
-    | "radio"
-    | "select"
-    | "multi-select";
+  inputType?: InputTypes;
   required?: boolean;
   options?: any;
   defaultValue?: any;
@@ -30,6 +22,16 @@ export type FormElementKeys =
   | "defaultValue"
   | "condition"
   | "conditionFor";
+
+export type InputTypes =
+  | "text"
+  | "number"
+  | "email"
+  | "password"
+  | "checkbox"
+  | "radio"
+  | "select"
+  | "multi-select";
 
 export const keyTolabel = (key: string) => {
   const t: Record<string, string> = {
