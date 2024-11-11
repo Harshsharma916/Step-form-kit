@@ -135,10 +135,14 @@ export const RadioInput: React.FC<FormElementProps> = ({
   options,
   required,
   className,
+  error,
 }) => {
   return (
     <div className={className}>
-      <label>{label}</label>
+      <label>
+        {required && <span style={{ color: "red" }}>*</span>}
+        {label}
+      </label>
       <div
         style={
           name == "inputType"
@@ -167,6 +171,9 @@ export const RadioInput: React.FC<FormElementProps> = ({
           </div>
         ))}
       </div>
+      {error && (
+        <p style={{ fontSize: "8px", color: "red", margin: 0 }}>{error} </p>
+      )}
     </div>
   );
 };

@@ -15,6 +15,7 @@ import {
 } from "@/utils/interfaces";
 import React, { useContext, useState } from "react";
 import styles from "./createForm.module.css";
+import { MdOutlineCancel } from "react-icons/md";
 
 const CreateForm = () => {
   const { formElements, setFormElements, addFormElement, updateFormElement } =
@@ -151,20 +152,35 @@ const CreateForm = () => {
                       })
                     }
                     className={styles.inputField}
+                    required={true}
+                    error={error?.[formKey]}
                   />
                   {(singleFormElement.inputType == "checkbox" ||
                     singleFormElement.inputType == "radio" ||
                     singleFormElement.inputType == "select" ||
                     singleFormElement.inputType == "multi-select") && (
-                    <div>
-                      <div>
+                    <div className={styles.optionCont}>
+                      <div className={styles.optionList}>
                         {singleFormElement?.options?.map(
                           (option: any, idx: number) => (
-                            <div key={idx}>{option}</div>
+                            <div key={idx}>
+                              <p>{option} </p>
+                              <MdOutlineCancel
+                                size={12}
+                                onClick={() => {
+                                  setSingleFormElement({
+                                    ...singleFormElement,
+                                    options: singleFormElement.options.filter(
+                                      (e: any) => e != option
+                                    ),
+                                  });
+                                }}
+                              />
+                            </div>
                           )
                         )}
                       </div>
-                      <div>
+                      <div className={styles.createOption}>
                         <TextInput
                           name={"options"}
                           label={"Options"}

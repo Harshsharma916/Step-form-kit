@@ -32,6 +32,43 @@
   background-color: rgb(255, 229, 156);
   /* background-color: rgb(244, 249, 153); */
 }
+
+.optionCont {
+  margin-top: 12px;
+}
+.optionList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.optionList div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.optionList div {
+  font-size: 10px;
+  border-radius: 4px;
+  border: 0.5px solid black;
+  padding: 4px 8px;
+}
+
+.createOption {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.createOption button {
+  height: auto;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: rgb(255, 229, 156);
+}
+
 .inputField {
   display: flex;
   flex-direction: column;

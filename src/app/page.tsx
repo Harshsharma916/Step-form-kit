@@ -5,10 +5,13 @@ import CreateForm from "./create-form";
 
 export default function Home() {
   return (
-    <FormElementsProvider>
+    <>
+      <div className={styles.header}></div>
       <div className={styles.page}>
-        <CreateForm />
+        <FormElementsProvider>
+          <CreateForm />
+        </FormElementsProvider>
       </div>
-    </FormElementsProvider>
+    </>
   );
 }
