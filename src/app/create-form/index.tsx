@@ -16,6 +16,9 @@ import {
 import React, { useContext, useState } from "react";
 import styles from "./createForm.module.css";
 import { MdOutlineCancel } from "react-icons/md";
+import { Button, Input, Tag } from "@/components/common";
+import { CiCircleCheck } from "react-icons/ci";
+import axios from "axios";
 
 const CreateForm = () => {
   const { formElements, setFormElements, addFormElement, updateFormElement } =
@@ -23,7 +26,29 @@ const CreateForm = () => {
   const [singleFormElement, setSingleFormElement] = useState<FormElement>({});
   const [error, setError] = useState<any>();
   const [optionText, setOptionText] = useState<string>("");
+  const [sections, setSections] = useState<string[]>([]);
+  const [searchSection, setSearchSection] = useState<string>("");
+  const [selectedSection, setSelectedSection] = useState<string>("");
   const formElementsNames = formElements?.map((item) => item.name);
+  const formElementsWithSection = formElements?.reduce(
+    (acc: { [key: string]: FormElement[] }, current: FormElement) => {
+      if (current.section) {
+        if (acc[current.section]) {
+          acc[current.section].push(current);
+        } else {
+          acc[current.section] = [current];
+        }
+      } else {
+        if (!acc["default"]) {
+          acc["default"] = [];
+        }
+        acc["default"].push(current);
+      }
+      return acc;
+    },
+    { default: [] }
+  );
+
   const formKeys: FormElementKeys[] = [
     "name",
     "label",
@@ -73,17 +98,77 @@ const CreateForm = () => {
         return;
       }
     }
-    addFormElement(singleFormElement);
+    addFormElement({ ...singleFormElement, section: selectedSection });
     setSingleFormElement({});
     setError({});
   };
 
+  const handleSubmitCreatedForm = () => {
+    try {
+      const res = axios.post("/api/submitCreatedForm", { form: formElements });
+      console.log({ res });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={styles.createForm}>
-      <div className={styles.formSuggestion}>
-        <p>Start With</p>
+      <div className={styles.editCont}>
+        <div>
+          <p>Sections</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <Input
+              value={searchSection}
+              onChange={(e: any) => setSearchSection(e.target.value)}
+              width={"100%"}
+            />
+            <Button
+              width={120}
+              onChange={() => {
+                setSections([...sections, searchSection]);
+                setSearchSection("");
+              }}
+              styles={{ padding: "8px", border: "1px solid white" }}
+            >
+              Create
+            </Button>
+          </div>
+          <div className={styles.sectionList}>
+            {sections?.map((section: string, idx: number) => (
+              <Tag
+                width={"max-content"}
+                key={idx}
+                styles={{ cursor: "pointer" }}
+                onChange={() => setSelectedSection(section)}
+              >
+                {section}
+                {selectedSection == section && <CiCircleCheck />}
+              </Tag>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p>Start With</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <Input value={""} onChange={(e: any) => {}} width={"100%"} />
+            <Button
+              width={120}
+              onChange={() => {}}
+              styles={{ padding: "8px", border: "1px solid white" }}
+            >
+              Search
+            </Button>
+          </div>
+        </div>
       </div>
       <div className={styles.form}>
+        <Tag
+          width={"max-content"}
+          styles={{ backgroundColor: "rgb(255, 229, 156)" }}
+        >
+          {selectedSection ? selectedSection : "Default"}
+        </Tag>
         {formKeys.map((formKey: FormElementKeys, idx: number) => {
           switch (formKey) {
             case "conditionFor":
@@ -225,18 +310,46 @@ const CreateForm = () => {
               );
           }
         })}
-        <button className={styles.addButton} onClick={handleOnClick}>
+        <Button
+          onChange={handleOnClick}
+          width={"30%"}
+          styles={{ marginLeft: "auto", marginTop: "10px" }}
+        >
           Add Field
-        </button>
+        </Button>
       </div>
       <div className={styles.displayForm}>
         <p>Created Form</p>
-        {formElements.map((item, idx) => (
-          <div key={idx} className={styles.displayFormFields}>
-            <p>Name:</p>
-            <p>{item.name}</p>
-          </div>
-        ))}
+        {Object.entries(formElementsWithSection)?.map(
+          (item: any, idx: number) => {
+            const key = item[0];
+            const value = item[1];
+            return (
+              <div key={idx}>
+                <Tag width={"max-content"} styles={{ marginBottom: "10px" }}>
+                  {key}
+                </Tag>
+                {value.map((item: any, idx: number) => (
+                  <div key={idx} className={styles.displayFormFields}>
+                    <p>Form Field:</p>
+                    <p>{item.name}</p>
+                  </div>
+                ))}
+              </div>
+            );
+          }
+        )}
+        <Button
+          onChange={handleSubmitCreatedForm}
+          width={"40%"}
+          styles={{
+            marginLeft: "auto",
+            marginTop: "auto",
+            border: "1px solid white",
+          }}
+        >
+          Submit Form
+        </Button>
       </div>
     </div>
   );

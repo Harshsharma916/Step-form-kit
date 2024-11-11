@@ -9,6 +9,7 @@ export interface FormElement {
   defaultValue?: any;
   condition?: string;
   conditionFor?: string[];
+  section?: string;
 }
 
 export type ValidationTypes = "email" | "phoneNumber";
