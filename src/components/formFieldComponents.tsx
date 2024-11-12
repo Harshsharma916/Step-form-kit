@@ -207,6 +207,7 @@ export const FormField: React.FC<FormElementProps> = ({
   inputType,
   options,
   required,
+  validation,
 }) => {
   switch (inputType) {
     case "text":

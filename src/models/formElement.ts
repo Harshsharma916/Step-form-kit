@@ -36,6 +36,6 @@ const createdFormSchema = new Schema<any>(
 
 const CreateFormModel =
   mongoose.models.CreatedForm ||
-  mongoose.model("CreatedForm", formElementSchema);
+  mongoose.model("CreatedForm", createdFormSchema);
 
 export { CreateFormModel };

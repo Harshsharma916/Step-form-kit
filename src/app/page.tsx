@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { FormElementsProvider } from "@/utils/context";
-import CreateForm from "./create-form";
+import CreateForm from "../components/create-form";
 
 export default function Home() {
   return (

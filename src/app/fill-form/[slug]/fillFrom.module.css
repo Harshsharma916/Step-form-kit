@@ -1,0 +1,9 @@
+.fillForm {
+  /* background-color: rgb(142, 255, 255); */
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
